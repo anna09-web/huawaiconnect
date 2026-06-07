@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   });
 
   const results = await Promise.allSettled(
-    tokens.map((t) => syncHealthData(t.userId))
+    tokens.map((t: { userId: string }) => syncHealthData(t.userId))
   );
 
   const succeeded = results.filter((r: PromiseSettledResult<void>) => r.status === "fulfilled").length;

@@ -8,12 +8,14 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding database with sample data...");
 
+  const demoPassword = await bcrypt.hash("demo1234", 12);
   const user = await prisma.user.upsert({
     where: { email: "demo@example.com" },
     update: {},
     create: {
       email: "demo@example.com",
       name: "Demo User",
+      password: demoPassword,
       emailVerified: new Date(),
     },
   });
@@ -158,6 +160,7 @@ async function main() {
 
   console.log(`\nSeed complete!`);
   console.log(`User email: demo@example.com`);
+  console.log(`User password: demo1234`);
   console.log(`Demo API key: ${rawKey}`);
   console.log(`Health data points: ${healthPoints.length}`);
   console.log(`Sleep sessions: ${sleepSessions.length}`);

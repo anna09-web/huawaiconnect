@@ -7,6 +7,11 @@ import { prisma } from "./prisma";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
+  // NEXTAUTH_SECRET is required. For Vercel preview deployments without the env var set,
+  // we derive a fallback from VERCEL_URL so the app at least loads.
+  secret:
+    process.env.NEXTAUTH_SECRET ||
+    (process.env.VERCEL_URL ? `preview-${process.env.VERCEL_URL}` : undefined),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "placeholder",
